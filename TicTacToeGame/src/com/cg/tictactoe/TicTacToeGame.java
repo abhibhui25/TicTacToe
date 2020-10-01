@@ -3,6 +3,8 @@ package com.cg.tictactoe;
 import java.util.*;
 
 public class TicTacToeGame {
+	Scanner sc = new Scanner(System.in);
+
 	/**
 	 * UC1 Creating Board
 	 */
@@ -14,25 +16,36 @@ public class TicTacToeGame {
 		return board;
 	}
 
+	/**
+	 * UC2 Taking Input
+	 */
 	public static char inputLetter() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the letter(X/O)");
-		char ch = sc.next().charAt(0);
-		return ch;
+		char userInput = sc.next().charAt(0);
+		return userInput;
+	}
+	
+	public static void showBoard(char[] board)
+	{
+		System.out.println(board[1]+" | "+board[2]+" | "+board[3]+"\n");
+		System.out.println(board[4]+" | "+board[5]+" | "+board[6]+"\n");
+		System.out.println(board[7]+" | "+board[8]+" | "+board[9]+"\n");
 	}
 
 	public static void main(String[] args) {
+		
 		System.out.println("Welcome to Tic Tac Toe game!");
-		createBoard();
+		char[] boardValue=createBoard();
 		char comp, player;
 		player = inputLetter();
-		if (player == 'X') {
+		if (player == 'X' || player == 'x')
 			comp = 'O';
-		} else {
+		else
 			comp = 'X';
-		}
-		System.out.println("computer letter is: " + comp);
-		System.out.println("player letter is: " + player);
+
+		System.out.println("computer letter is: " + comp + "\nplayer letter is: " + player);
+		showBoard(boardValue);
 	}
 
 }
