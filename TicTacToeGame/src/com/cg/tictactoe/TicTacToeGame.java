@@ -48,12 +48,21 @@ public class TicTacToeGame {
 		for (int i = 0; i < 10; i++) {
 			System.out.println("Select the location");
 			int location = sc.nextInt();
-			if (board[location] != ' ')
+			if (!checkFreeSpace(board, location)) {
 				System.out.println("location occupied");
-			else
-				board[location]=player;
-				showBoard(board);
+				System.exit(0);
+			} else
+				board[location] = player;
+			showBoard(board);
 		}
+		sc.close();
+	}
+
+	/**
+	 * Check for free space
+	 */
+	private static boolean checkFreeSpace(char[] board, int index) {
+		return board[index] == ' ';
 	}
 
 	public static void main(String[] args) {
