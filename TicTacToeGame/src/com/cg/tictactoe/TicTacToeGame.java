@@ -28,8 +28,8 @@ public class TicTacToeGame {
 		System.out.println("Enter your letter(X/O)");
 		char userInput = sc.next().charAt(0);
 		Character.toUpperCase(userInput);
-		if (userInput == 'X' || userInput == 'O')
-			return userInput;
+		if (Character.toUpperCase(userInput) == 'X' || Character.toUpperCase(userInput) == 'O')
+			return Character.toUpperCase(userInput);
 		else
 			System.out.println("Invalid letter");
 		return inputLetter();
@@ -45,21 +45,23 @@ public class TicTacToeGame {
 	}
 
 	/**
-	 * UC4 Select the location UC10 taking one of the available corners UC11
-	 * taking center or any of the available sides on priority
+	 * UC4 Select the location UC10 
+	 * taking one of the available corners 
+	 * UC11 taking center or any of the available sides on priority
 	 */
-	public static void selectLocation(char[] board, char user, char player) {
+	public static void selectLocation(char[] board, char player, char user) {
 
 		Scanner sc = new Scanner(System.in);
 		if (player == user) {
-			System.out.println("player's move");
+			System.out.println("user's move");
 			System.out.println("Select the location");
 			int location = sc.nextInt();
-			if (!checkFreeSpace(board, location)) {
+			if (location>9||location<1||!checkFreeSpace(board, location)) {
 				System.out.println("location occupied");
+				selectLocation(board,player,user);
 			} else
 				board[location] = player;
-		} else {
+		} else{
 			System.out.println("Computer's move");
 			if (computerWin(board, player)) {
 				return;
@@ -99,7 +101,7 @@ public class TicTacToeGame {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("select H/T");
 		char toss = Character.toUpperCase(sc.next().charAt(0));
-		int temp = (int) (Math.random() * 2 % 2);
+		int temp = (int) Math.floor(Math.random() * 2 % 2);
 		char result;
 		if (temp == 0)
 			result = 'H';
@@ -133,7 +135,7 @@ public class TicTacToeGame {
 	}
 
 	public static boolean tieCheck(char[] board) {
-		for (int i = 0; i < 10; i++) {
+		for (int i = 1; i < 10; i++) {
 			if (board[i] == ' ') {
 				return false;
 			}
@@ -192,35 +194,46 @@ public class TicTacToeGame {
 				System.out.println(player + " is the winner");
 				break;
 			}
-			player = ((player == 'X') ? 'O' : 'X');
+			if(player=='X')
+				player='O';
+			else
+				player='X';
 		}
+	}
+
+	/**
+	 * UC13 check if the user wants to continue playing
+	 */
+	public static void continueGame() {
+		char[] board = createBoard();
+		char user = inputLetter();
+		char computer = ((user == 'X') ? 'O' : 'X');
+		showBoard(board);
+		char player;
+		if (toss())
+			player = user;
+		else 
+			player = computer;
+		
+		switchOrWin(board, player, user);
 	}
 
 	public static void main(String[] args) {
-
-		System.out.println("Welcome to Tic Tac Toe game!");
-		char[] board = createBoard();
-		char comp, player, user;
-		int position = 1;
-		user = inputLetter();
-		if (user == 'X' || user == 'x')
-			comp = 'O';
-		else
-			comp = 'X';
-		showBoard(board);
-		if (toss())
-			player = user;
-		else
-			player = comp;
-		if (player == user)
-			selectLocation(board, user, player);
-		else {
-			position = 1 + (int) (Math.random() * (9));
-			board[position] = comp;
+		
+		System.out.println("Welcome to TicTacToe game");
+		Scanner scanner = new Scanner(System.in);
+		int key = 1;
+		while (key != 0) {
+		continueGame();
+		System.out.println("Play again? (Y/N)");
+		if (Character.toUpperCase(scanner.next().charAt(0)) == 'N') {
+		key = 0;
+		System.out.println("Game Over");
 		}
-		showBoard(board);
-		tieCheck(board);
-		computerWin(board, player);
+
+		}
+		scanner.close();
+		}
 	}
 
-}
+
