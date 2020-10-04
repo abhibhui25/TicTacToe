@@ -73,7 +73,8 @@ public class TicTacToeGame {
 	/**
 	 * UC6 toss to decide who starts
 	 */
-	public boolean toss() {
+	public static boolean toss() {
+		Scanner sc=new Scanner(System.in);
 		System.out.println("select H/T");
 		char toss = Character.toUpperCase(sc.next().charAt(0));
 		int temp = (int) (Math.random() * 2 % 2);
@@ -91,44 +92,78 @@ public class TicTacToeGame {
 		}
 
 	}
+
 	/**
 	 * UC7 Check for winning condition
 	 */
-	public int checkWin(char[] board) {
-		if (board[1] == board[2] && board[2] == board[3])
-			return 1;
-		else if (board[4] == board[5] && board[5] == board[6])
-			return 1;
-		else if (board[7] == board[8] && board[8] == board[9])
-			return 1;
-		else if (board[1] == board[4] && board[4] == board[7])
-			return 1;
-		else if (board[2] == board[5] && board[5] == board[8])
-			return 1;
-		else if (board[3] == board[6] && board[6] == board[9])
-			return 1;
-		else if (board[1] == board[5] && board[5] == board[9])
-			return 1;
-		else if (board[3] == board[5] && board[5] == board[7])
-			return 1;
+	public static boolean checkWin(char[] board,char player) {
+		if ((board[1] == player && board[2] == player && board[3] == player)
+				|| (board[4] == player && board[5] == player && board[6] == player)
+				|| (board[7] == player && board[8] == player && board[9] == player)
+				|| (board[1] == player && board[4] == player && board[7] == player)
+				|| (board[2] == player && board[5] == player && board[8] == player)
+				|| (board[3] == player && board[6] == player && board[9] == player)
+				|| (board[1] == player && board[5] == player && board[9] == player)
+				|| (board[3] == player && board[5] == player && board[7] == player))
+				return true;
 		else
-			return 0;
+			return false;
 	}
+
+	public static boolean tieCheck(char[] board) {
+		for (int i = 0; i < 10; i++) {
+			if (board[i] == ' ') {
+				return false;
+			}
+		}
+		System.out.println("The game has tied");
+		return true;
+	}
+	/**
+	* UC8 to check if computer can win 
+	*/
+	public static boolean computerWin(char[] board, char c) {
+	for (int pos = 1; pos < 10; pos++) {
+	if (board[pos] == ' ') {
+	board[pos] = c;
+	if (!checkWin(board, c)) {
+	board[pos] = ' ';
+	} else {
+	{
+	return true;
+	}
+	}
+	}
+	}
+	return false;
+	}
+
 	public static void main(String[] args) {
 
 		System.out.println("Welcome to Tic Tac Toe game!");
 		char[] board = createBoard();
-		char comp, player;
-		player = inputLetter();
-		if (player == 'X' || player == 'x')
+		char comp, player,user;
+		int position=1;
+		user = inputLetter();
+		if (user == 'X' || user == 'x')
 			comp = 'O';
 		else
 			comp = 'X';
-
-		System.out.println("computer letter is: " + comp + "\nplayer letter is: " + player);
-		selectLocation(board, player);
-		
-
+		showBoard(board);
+		if(toss())
+			player=user;
+		else
+			player=comp;
+		if(player==user)
+			selectLocation(board,player);
+		else
+		{
+			position=1 + (int)(Math.random() * (9));
+			board[position]=comp;
+		}
+		showBoard(board);
+		tieCheck(board);
+		computerWin(board,player);
 	}
 
 }
