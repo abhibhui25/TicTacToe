@@ -137,6 +137,25 @@ public class TicTacToeGame {
 	}
 	return false;
 	}
+	/**
+	* UC9 deny user's move if user is going to win in the next move
+	*/
+	public static boolean denyUserWin(char[] board, char player, char user) {
+	for (int i= 1; i < 10; i++) {
+	if (board[i] == ' ') {
+	board[i] = user;
+	if (!checkWin(board, user)) {
+	board[i] = ' ';
+	} else {
+	{
+	board[i] = player;
+	return true;
+	}
+	}
+	}
+	}
+	return false;
+	}
 
 	public static void main(String[] args) {
 
