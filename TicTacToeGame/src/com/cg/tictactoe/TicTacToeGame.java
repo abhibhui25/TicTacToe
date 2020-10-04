@@ -45,9 +45,8 @@ public class TicTacToeGame {
 	}
 
 	/**
-	 * UC4 Select the location
-	 * UC10 taking one of the available corners
-	 * UC11 taking center or any of the available sides on priority
+	 * UC4 Select the location UC10 taking one of the available corners UC11
+	 * taking center or any of the available sides on priority
 	 */
 	public static void selectLocation(char[] board, char user, char player) {
 
@@ -182,6 +181,21 @@ public class TicTacToeGame {
 		return false;
 	}
 
+	/**
+	 * UC12 play until the game has been won or tied
+	 */
+	public static void switchOrWin(char[] board, char player, char user) {
+		while ((!tieCheck(board))) {
+			selectLocation(board, player, user);
+			showBoard(board);
+			if (checkWin(board, player)) {
+				System.out.println(player + " is the winner");
+				break;
+			}
+			player = ((player == 'X') ? 'O' : 'X');
+		}
+	}
+
 	public static void main(String[] args) {
 
 		System.out.println("Welcome to Tic Tac Toe game!");
@@ -199,7 +213,7 @@ public class TicTacToeGame {
 		else
 			player = comp;
 		if (player == user)
-			selectLocation(board,user, player);
+			selectLocation(board, user, player);
 		else {
 			position = 1 + (int) (Math.random() * (9));
 			board[position] = comp;
